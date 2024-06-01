@@ -1,0 +1,5 @@
+Split terminal into 3 
+
+for front end : npm start 
+for backend : npm run dev
+for socket: npm start 
