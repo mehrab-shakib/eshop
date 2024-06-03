@@ -8,11 +8,14 @@ const router = express.Router();
 const cloudinary = require("cloudinary");
 
 
+router.use(express.json({limit: '50mb'}));
+router.use(express.urlencoded({limit: "50mb", extended: true, parameterLimit:50000}));
 
 // create event
 router.post(
   "/create-event",
   catchAsyncErrors(async (req, res, next) => {
+    
     try {
       const shopId = req.body.shopId;
       const shop = await Shop.findById(shopId);
