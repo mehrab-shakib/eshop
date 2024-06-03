@@ -7,6 +7,8 @@ const { isSeller, isAdmin, isAuthenticated } = require("../middleware/auth");
 const router = express.Router();
 const cloudinary = require("cloudinary");
 
+
+
 // create event
 router.post(
   "/create-event",
