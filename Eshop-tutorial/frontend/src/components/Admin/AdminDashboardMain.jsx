@@ -70,7 +70,7 @@ const AdminDashboardMain = () => {
       row.push({
         id: item._id,
         itemsQty: item?.cart?.reduce((acc, item) => acc + item.qty, 0),
-        total: item?.totalPrice + " $",
+        total: item?.totalPrice + " BDT",
         status: item?.status,
         createdAt: item?.createdAt.slice(0,10),
       });
@@ -85,7 +85,7 @@ const AdminDashboardMain = () => {
         <div className="w-full p-4">
         <h3 className="text-[22px] font-Poppins pb-2">Overview</h3>
         <div className="w-full block 800px:flex items-center justify-between">
-          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
+          <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-[white] shadow rounded px-2 py-5">
             <div className="flex items-center">
               <AiOutlineMoneyCollect
                 size={30}
@@ -98,7 +98,7 @@ const AdminDashboardMain = () => {
                 Total Earning
               </h3>
             </div>
-            <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">$ {adminBalance}</h5>
+            <h5 className="pt-2 pl-[36px] text-[22px] font-[500]">BDT {adminBalance}</h5>
           </div>
   
           <div className="w-full mb-4 800px:w-[30%] min-h-[20vh] bg-white shadow rounded px-2 py-5">
