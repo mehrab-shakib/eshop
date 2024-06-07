@@ -5,6 +5,7 @@ import { FiPackage, FiShoppingBag } from 'react-icons/fi'
 import { MdOutlineLocalOffer } from 'react-icons/md'
 import { useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
+import {logo3} from "../../Assests/images"
 
 const AdminHeader = () => {
     const {user} = useSelector((state) => state.user);
@@ -14,7 +15,7 @@ const AdminHeader = () => {
       <div>
         <Link to="/">
           <img
-            src="../../Assests/images/artisans1.svg"
+            src={logo3}
             alt=""
           />
         </Link>

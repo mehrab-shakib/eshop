@@ -27,7 +27,7 @@ const Checkout = () => {
   }, []);
 
   const paymentSubmit = () => {
-   if(address1 === "" || address2 === "" || zipCode === null || country === "" || city === ""){
+   if(address1 === "" || zipCode === null || country === "" || city === ""){
       toast.error("Please choose your delivery address!")
    } else{
     const shippingAddress = {
@@ -60,7 +60,7 @@ const Checkout = () => {
   );
 
   // this is shipping cost variable
-  const shipping = subTotalPrice * 0.1;
+  const shipping =  50;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -316,12 +316,12 @@ const CartData = ({
     <div className="w-full bg-[#fff] rounded-md p-5 pb-8">
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">subtotal:</h3>
-        <h5 className="text-[18px] font-[600]">BDT {subTotalPrice}</h5>
+        <h5 className="text-[18px] font-[600]">{subTotalPrice} BDT</h5>
       </div>
       <br />
       <div className="flex justify-between">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">shipping:</h3>
-        <h5 className="text-[18px] font-[600]">BDT {shipping.toFixed(2)}</h5>
+        <h5 className="text-[18px] font-[600]"> {shipping.toFixed(2)} BDT</h5>
       </div>
       <br />
       <div className="flex justify-between border-b pb-3">
@@ -330,7 +330,7 @@ const CartData = ({
           - {discountPercentenge ? "BDT" + discountPercentenge.toString() : null}
         </h5>
       </div>
-      <h5 className="text-[18px] font-[600] text-end pt-3">BDT {totalPrice}</h5>
+      <h5 className="text-[18px] font-[600] text-end pt-3">{totalPrice} BDT</h5>
       <br />
       <form onSubmit={handleSubmit}>
         <input

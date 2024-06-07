@@ -229,13 +229,13 @@ export const navItems = [
       title: "Gifts",
       subTitle: "",
       image_Url:
-        "https://securecdn.pymnts.com/wp-content/uploads/2014/11/Gifts-Photo-700x489.jpg",
+        "https://www.bworldonline.com/wp-content/uploads/2021/12/03-gifts.jpg",
     },
     {
       id: 7,
       title: "Pet Care",
       subTitle: "",
-      image_Url: "https://cdn.openpr.com/T/c/Tc15444071_g.jpg",
+      image_Url: "https://i.pinimg.com/originals/46/79/8c/46798c3b6cc788748a78d5660b619ada.jpg",
     },
     {
       id: 8,
