@@ -26,33 +26,122 @@ const Checkout = () => {
     window.scrollTo(0, 0);
   }, []);
 
-  const paymentSubmit = () => {
-   if(address1 === "" || zipCode === null || country === "" || city === ""){
-      toast.error("Please choose your delivery address!")
-   } else{
-    const shippingAddress = {
-      address1,
-      address2,
-      zipCode,
-      country,
-      city,
-    };
+  // const paymentSubmit = async () => {
+  //  if(address1 === "" || zipCode === null || country === "" || city === ""){
+  //     toast.error("Please choose your delivery address!")
+  //  } else{
+  //   const shippingAddress = {
+  //     address1,
+  //     address2,
+  //     zipCode,
+  //     country,
+  //     city,
+  //   };
 
-    const orderData = {
-      cart,
-      totalPrice,
-      subTotalPrice,
-      shipping,
-      discountPrice,
-      shippingAddress,
-      user,
+  //   const orderData = {
+  //     cart,
+  //     totalPrice,
+  //     subTotalPrice,
+  //     shipping,
+  //     discountPrice,
+  //     shippingAddress,
+  //     user,
+  //   }
+
+  //   // update local storage with the updated orders array
+  //   localStorage.setItem("latestOrder", JSON.stringify(orderData));
+  //   navigate("/payment");
+  //  }
+  // };
+
+  const paymentSubmit = async () => {
+    if (address1 === "" || zipCode === null || country === "" || city === "") {
+      toast.error("Please choose your delivery address!");
+    } else {
+      const shippingAddress = {
+        address1,
+        address2,
+        zipCode,
+        country,
+        city,
+      };
+    
+      const orderData = {
+        cart,
+        totalPrice,
+        subTotalPrice,
+        shipping,
+        discountPrice,
+        shippingAddress,
+        user,
+      };
+    
+      // Save the order data in localStorage
+      localStorage.setItem("latestOrder", JSON.stringify(orderData));
+    
+      const paymentData = {
+        amount: totalPrice,
+        name: user.name,
+        email: user.email,
+        address: address1,
+        city: city,
+        state: "", // Add state if applicable
+        postcode: zipCode,
+        country: country,
+        phone: user.phoneNumber,
+      };
+    
+      // Example of sending payment data to a payment processing endpoint
+      fetch(`${server}/payment/process`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(paymentData),
+      })
+      .then((res) => {
+        if (res.ok) {
+          return res.json();
+        } else {
+          throw new Error(`Server returned an error: ${res.status}`);
+        }
+      })
+      .then((result) => {
+        console.log(result);
+        
+      })
+      
     }
-
-    // update local storage with the updated orders array
-    localStorage.setItem("latestOrder", JSON.stringify(orderData));
-    navigate("/payment");
-   }
+    
+        
+      
+        
+        // // Log the payment data to ensure it's correct
+        // console.log("Payment Data:", paymentData);
+  
+        // // Call the backend to process the payment
+        // const response = await axios.post(`${server}/payment/process`, paymentData);
+  
+        // // Log the full response for debugging
+        // console.log("Full Backend Response:", response);
+  
+        // if (response.data.success) {
+        //   const redirectUrl = response.data.redirect_url;
+        //   console.log("Redirect URL:", redirectUrl);
+        //   window.location.href = redirectUrl;
+        // } else {
+        //   throw new Error(response.data.message || "Redirect URL is undefined");
+        // }
+       
+    
   };
+  
+  
+
+  
+  
+  
+
 
   const subTotalPrice = cart.reduce(
     (acc, item) => acc + item.qty * item.discountPrice,
