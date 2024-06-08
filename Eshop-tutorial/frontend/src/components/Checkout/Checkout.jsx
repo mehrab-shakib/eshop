@@ -17,6 +17,7 @@ const Checkout = () => {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [zipCode, setZipCode] = useState(null);
+  const [phoneNumber, setPhoneNumber] = useState("")
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(null);
@@ -64,8 +65,9 @@ const Checkout = () => {
         zipCode,
         country,
         city,
+        phoneNumber
       };
-    
+
       const orderData = {
         cart,
         totalPrice,
@@ -75,73 +77,46 @@ const Checkout = () => {
         shippingAddress,
         user,
       };
-    
+
       // Save the order data in localStorage
       localStorage.setItem("latestOrder", JSON.stringify(orderData));
-    
+
       const paymentData = {
         amount: totalPrice,
         name: user.name,
         email: user.email,
-        address: address1,
+        address1: address1,
+        address2: address2,
         city: city,
         state: "", // Add state if applicable
         postcode: zipCode,
         country: country,
         phone: user.phoneNumber,
       };
-    
-      // Example of sending payment data to a payment processing endpoint
-      fetch(`${server}/payment/process`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(paymentData),
-      })
-      .then((res) => {
-        if (res.ok) {
-          return res.json();
-        } else {
-          throw new Error(`Server returned an error: ${res.status}`);
+
+      // // Log the payment data to ensure it's correct
+      console.log("Payment Data:", paymentData);
+
+      // Call the backend to process the payment
+      const response = await axios.post(
+        `${server}/payment/process`,
+        paymentData, {
+          maxRedirects: 5, 
         }
-      })
-      .then((result) => {
-        console.log(result);
-        
-      })
-      
+      );
+
+      // Log the full response for debugging
+      console.log("Full Backend Response:", response);
+
+      if (response.data.success) {
+        const redirectUrl = response.data.redirect_url;
+        console.log("Redirect URL:", redirectUrl);
+        window.location.href = redirectUrl;
+      } else {
+        throw new Error(response.data.message || "Redirect URL is undefined");
+      }
     }
-    
-        
-      
-        
-        // // Log the payment data to ensure it's correct
-        // console.log("Payment Data:", paymentData);
-  
-        // // Call the backend to process the payment
-        // const response = await axios.post(`${server}/payment/process`, paymentData);
-  
-        // // Log the full response for debugging
-        // console.log("Full Backend Response:", response);
-  
-        // if (response.data.success) {
-        //   const redirectUrl = response.data.redirect_url;
-        //   console.log("Redirect URL:", redirectUrl);
-        //   window.location.href = redirectUrl;
-        // } else {
-        //   throw new Error(response.data.message || "Redirect URL is undefined");
-        // }
-       
-    
   };
-  
-  
-
-  
-  
-  
-
 
   const subTotalPrice = cart.reduce(
     (acc, item) => acc + item.qty * item.discountPrice,
@@ -149,7 +124,7 @@ const Checkout = () => {
   );
 
   // this is shipping cost variable
-  const shipping =  50;
+  const shipping = 50;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -209,6 +184,8 @@ const Checkout = () => {
             setAddress2={setAddress2}
             zipCode={zipCode}
             setZipCode={setZipCode}
+            phoneNumber={phoneNumber}
+            setPhoneNumber={setPhoneNumber}
           />
         </div>
         <div className="w-full 800px:w-[35%] 800px:mt-0 mt-8">
@@ -247,6 +224,8 @@ const ShippingInfo = ({
   setAddress2,
   zipCode,
   setZipCode,
+  phoneNumber,
+  setPhoneNumber
 }) => {
   return (
     <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
@@ -416,7 +395,8 @@ const CartData = ({
       <div className="flex justify-between border-b pb-3">
         <h3 className="text-[16px] font-[400] text-[#000000a4]">Discount:</h3>
         <h5 className="text-[18px] font-[600]">
-          - {discountPercentenge ? "BDT" + discountPercentenge.toString() : null}
+          -{" "}
+          {discountPercentenge ? "BDT" + discountPercentenge.toString() : null}
         </h5>
       </div>
       <h5 className="text-[18px] font-[600] text-end pt-3">{totalPrice} BDT</h5>

@@ -1,6 +1,7 @@
 const app = require("./app");
 const connectDatabase = require("./db/Database");
 const cloudinary = require("cloudinary");
+const cors = require('cors')
 
 // Handling uncaught Exception
 process.on("uncaughtException", (err) => {
@@ -23,6 +24,14 @@ cloudinary.config({
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET
 })
+
+//configuring cors
+app.use(cors({
+  origin: '*', // allow requests from all origins
+  credentials: true, // allow credentials (e.g., cookies) to be sent
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // allow these methods
+  headers: ['Content-Type', 'Authorization'] // allow these headers
+}));
 
 
 // create server

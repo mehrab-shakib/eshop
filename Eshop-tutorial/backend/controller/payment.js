@@ -10,6 +10,8 @@ const is_live = false;
 router.post(
   "/process",
   catchAsyncErrors(async (req, res, next) => {
+
+    
     const paymentData = {
       total_amount: req.body.amount,
       currency: 'BDT',
@@ -30,7 +32,7 @@ router.post(
       cus_state: req.body.state,
       cus_postcode: req.body.zipCode,
       cus_country: req.body.country,
-      cus_phone: req.body.phone,
+      cus_phone: `${req.body.phoneNumber}`,
       cus_fax: req.body.fax,
       multi_card_name: '',
       value_a: 'ref001_A',
@@ -44,36 +46,23 @@ router.post(
     };
 
     const sslcz = new SSLCommerzPayment(store_id, store_passwd, is_live);
-    sslcz.init(paymentData).then(data => {
+    sslcz.init(paymentData).then(apiResponse => {
       // process the response from SSLCommerz
-
-      sslcz.init(paymentData).then(apiResponse => {
-        // Redirect the user to payment gateway
-        let GatewayPageURL = apiResponse.GatewayPageURL
-        res.send(GatewayPageURL)
-        console.log('Redirecting to: ', GatewayPageURL)
-    });
-      // if (data.GatewayPageURL) {
-      //   res.status(200).json({
-      //     success: true,
-      //     redirect_url: data.GatewayPageURL,
-      //   });
-      // } else {
-      //   res.status(400).json({
-      //     success: false,
-      //     message: 'SSLCommerz payment initiation failed',
-      //   });
-      // }
+      let GatewayPageURL = apiResponse.GatewayPageURL
+      // console.log(apiResponse)
+      res.redirect(GatewayPageURL)
+      console.log('Redirecting to: ', GatewayPageURL)
+     
     });
   })
 );
 
-router.get(
-  "/sslcommerzapikey",
-  catchAsyncErrors(async (req, res, next) => {
-    res.status(200).json({ sslcommerzApikey: store_id });
-  })
-);
+// router.get(
+//   "/sslcommerzapikey",
+//   catchAsyncErrors(async (req, res, next) => {
+//     res.status(200).json({ sslcommerzApikey: store_id });
+//   })
+// );
 
 
 // Ei code stripe er jonne 
