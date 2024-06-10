@@ -44,7 +44,7 @@ import {
   AdminDashboardOrders,
   AdminDashboardProducts,
   AdminDashboardEvents,
-  AdminDashboardWithdraw
+  AdminDashboardWithdraw,
 } from "./routes/AdminRoutes";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -58,16 +58,11 @@ import { getAllProducts } from "./redux/actions/product";
 import { getAllEvents } from "./redux/actions/event";
 import axios from "axios";
 import { server } from "./server";
-// import { Elements } from "@stripe/react-stripe-js";
-// import { loadStripe } from "@stripe/stripe-js";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const App = () => {
-  // const [stripeApikey, setStripeApiKey] = useState("");
-
-  // async function getStripeApikey() {
-  //   const { data } = await axios.get(`${server}/payment/stripeapikey`);
-  //   setStripeApiKey(data.stripeApikey);
-  // }
+  
   useEffect(() => {
     Store.dispatch(loadUser());
     Store.dispatch(loadSeller());
@@ -78,8 +73,8 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      {/* {stripeApikey && (
-        <Elements stripe={loadStripe(stripeApikey)}>
+    
+        {/* <Elements >
           <Routes>
             <Route
               path="/payment"
@@ -90,8 +85,9 @@ const App = () => {
               }
             />
           </Routes>
-        </Elements>
-      )} */}
+        </Elements> */}
+      
+
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
@@ -117,6 +113,15 @@ const App = () => {
             </ProtectedRoute>
           }
         />
+        <Route
+              path="/pay-ment"
+              element={
+                <ProtectedRoute>
+                  <PaymentPage />
+                </ProtectedRoute>
+              }
+            />
+
         <Route path="/order/success" element={<OrderSuccessPage />} />
         <Route
           path="/profile"
@@ -292,7 +297,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
-         <Route
+        <Route
           path="/admin-products"
           element={
             <ProtectedAdminRoute>
@@ -300,7 +305,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
-         <Route
+        <Route
           path="/admin-events"
           element={
             <ProtectedAdminRoute>
@@ -308,7 +313,7 @@ const App = () => {
             </ProtectedAdminRoute>
           }
         />
-         <Route
+        <Route
           path="/admin-withdraw-request"
           element={
             <ProtectedAdminRoute>

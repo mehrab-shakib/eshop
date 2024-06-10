@@ -12,6 +12,7 @@ router.post(
   catchAsyncErrors(async (req, res, next) => {
     const transID = `TXN_SSL_${shortid.generate()}`;
     // console.log(transID);
+    const id = req.body.object
 
     const paymentData = {
       total_amount: req.body.amount,
@@ -59,7 +60,16 @@ router.post(
     router.post('/order/success/:transID', async (req, res) => {
         console.log(req.params.transID);
       });
+
+      router.get(
+        "/stripeapikey",
+        catchAsyncErrors(async (req, res, next) => {
+          res.status(200).json({ stripeApikey: process.env.STRIPE_API_KEY });
+        })
+      );
   })
+
+  
 );
 
 module.exports = router;

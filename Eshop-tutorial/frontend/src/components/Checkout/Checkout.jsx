@@ -17,7 +17,7 @@ const Checkout = () => {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [zipCode, setZipCode] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState(null);
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(null);
@@ -53,67 +53,48 @@ const Checkout = () => {
 
       // Save the order data in localStorage
       localStorage.setItem("latestOrder", JSON.stringify(orderData));
+      navigate("/pay-ment");
 
-      const paymentData = {
-        amount: totalPrice,
-        name: user.name,
-        email: user.email,
-        address1: address1,
-        address2: address2,
-        city: city,
-        state: "", // Add state if applicable
-        postcode: zipCode,
-        country: country,
-        phone: user.phoneNumber,
-      };
 
-      // // Log the payment data to ensure it's correct
-      console.log("Payment Data:", paymentData);
+      // //SSl er Code shuru 
 
-      // Call the backend to process the payment
-      const response = await axios.post(
-        `${server}/payment/process`,
-        paymentData,
-        {
-          maxRedirects: 5,
-        }
-      );
-
-      if (response.data.success) {
-        const redirectUrl = response.data.redirect_url;
-        console.log("Redirect URL:", redirectUrl);
-        // window.location.href = redirectUrl;
-        window.open(redirectUrl, "_blank");
-      } else {
-        throw new Error(response.data.message || "Redirect URL is undefined");
-      }
-
-      // const order = {
-      //   userId: user.id,
-      //   cart: cart,
-      //   totalPrice: totalPrice,
-      //   subTotalPrice: subTotalPrice,
-      //   shipping: shipping,
-      //   discountPrice: discountPrice,
-      //   shippingAddress: shippingAddress,
+      // const paymentData = {
+      //   amount: totalPrice,
+      //   name: user.name,
+      //   email: user.email,
+      //   address1: address1,
+      //   address2: address2,
+      //   city: city,
+      //   state: "", // Add state if applicable
+      //   postcode: zipCode,
+      //   country: country,
+      //   phone: user.phoneNumber,
       // };
 
-      // const config = {
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // };
+      // // // Log the payment data to ensure it's correct
+      // console.log("Payment Data:", paymentData);
 
-      // await axios
-      //       .post(`${server}/order/create-order`, order, config)
-      //       .then((res) => {
-      //         setOpen(false);
-      //         navigate("/order/success");
-      //         toast.success("Order successful!");
-      //         localStorage.setItem("cartItems", JSON.stringify([]));
-      //         localStorage.setItem("latestOrder", JSON.stringify([]));
-      //         window.location.reload();
-      //       });
+      // // Call the backend to process the payment
+      // const response = await axios.post(
+      //   `${server}/payment/process`,
+      //   paymentData,
+      //   {
+      //     maxRedirects: 5,
+      //   }
+      // );
+
+      // if (response.data.success) {
+      //   const redirectUrl = response.data.redirect_url;
+      //   console.log("Redirect URL:", redirectUrl);
+      //   // window.location.href = redirectUrl;
+      //   window.open(redirectUrl, "_blank");
+      // } else {
+      //   throw new Error(response.data.message || "Redirect URL is undefined");
+      // }
+
+      // ssl er code shesh
+
+      
     }
   };
 
