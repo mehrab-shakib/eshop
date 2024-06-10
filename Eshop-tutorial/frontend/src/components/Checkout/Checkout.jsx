@@ -17,43 +17,16 @@ const Checkout = () => {
   const [address1, setAddress1] = useState("");
   const [address2, setAddress2] = useState("");
   const [zipCode, setZipCode] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState("")
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [couponCode, setCouponCode] = useState("");
   const [couponCodeData, setCouponCodeData] = useState(null);
   const [discountPrice, setDiscountPrice] = useState(null);
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
-
-  // const paymentSubmit = async () => {
-  //  if(address1 === "" || zipCode === null || country === "" || city === ""){
-  //     toast.error("Please choose your delivery address!")
-  //  } else{
-  //   const shippingAddress = {
-  //     address1,
-  //     address2,
-  //     zipCode,
-  //     country,
-  //     city,
-  //   };
-
-  //   const orderData = {
-  //     cart,
-  //     totalPrice,
-  //     subTotalPrice,
-  //     shipping,
-  //     discountPrice,
-  //     shippingAddress,
-  //     user,
-  //   }
-
-  //   // update local storage with the updated orders array
-  //   localStorage.setItem("latestOrder", JSON.stringify(orderData));
-  //   navigate("/payment");
-  //  }
-  // };
 
   const paymentSubmit = async () => {
     if (address1 === "" || zipCode === null || country === "" || city === "") {
@@ -65,7 +38,7 @@ const Checkout = () => {
         zipCode,
         country,
         city,
-        phoneNumber
+        phoneNumber,
       };
 
       const orderData = {
@@ -100,21 +73,47 @@ const Checkout = () => {
       // Call the backend to process the payment
       const response = await axios.post(
         `${server}/payment/process`,
-        paymentData, {
-          maxRedirects: 5, 
+        paymentData,
+        {
+          maxRedirects: 5,
         }
       );
-
-      // Log the full response for debugging
-      console.log("Full Backend Response:", response);
 
       if (response.data.success) {
         const redirectUrl = response.data.redirect_url;
         console.log("Redirect URL:", redirectUrl);
-        window.location.href = redirectUrl;
+        // window.location.href = redirectUrl;
+        window.open(redirectUrl, "_blank");
       } else {
         throw new Error(response.data.message || "Redirect URL is undefined");
       }
+
+      // const order = {
+      //   userId: user.id,
+      //   cart: cart,
+      //   totalPrice: totalPrice,
+      //   subTotalPrice: subTotalPrice,
+      //   shipping: shipping,
+      //   discountPrice: discountPrice,
+      //   shippingAddress: shippingAddress,
+      // };
+
+      // const config = {
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // };
+
+      // await axios
+      //       .post(`${server}/order/create-order`, order, config)
+      //       .then((res) => {
+      //         setOpen(false);
+      //         navigate("/order/success");
+      //         toast.success("Order successful!");
+      //         localStorage.setItem("cartItems", JSON.stringify([]));
+      //         localStorage.setItem("latestOrder", JSON.stringify([]));
+      //         window.location.reload();
+      //       });
     }
   };
 
@@ -225,7 +224,7 @@ const ShippingInfo = ({
   zipCode,
   setZipCode,
   phoneNumber,
-  setPhoneNumber
+  setPhoneNumber,
 }) => {
   return (
     <div className="w-full 800px:w-[95%] bg-white rounded-md p-5 pb-8">
