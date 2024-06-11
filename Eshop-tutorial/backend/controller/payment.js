@@ -5,20 +5,22 @@ const SSLCommerzPayment = require("sslcommerz-lts");
 const store_id = process.env.SSLCOMMERZ_STORE_ID;
 const store_passwd = process.env.SSLCOMMERZ_STORE_PASSWORD;
 const is_live = false;
-const shortid = require("shortid");
+const axios = require("axios");
 
 router.post(
   "/process",
   catchAsyncErrors(async (req, res, next) => {
-    const transID = `TXN_SSL_${shortid.generate()}`;
+    const transID =
+      "TXN" + Math.random().toString(36).toUpperCase().substr(2, 12);
     // console.log(transID);
-    const id = req.body.object
+    const id = req.body.object;
 
     const paymentData = {
       total_amount: req.body.amount,
       currency: "BDT",
       tran_id: transID,
-      success_url: `http://localhost:3000/order/success/${transID}`,
+      success_url: "http://localhost:3000/order/success",
+      // success_url: `http://localhost:3000/order/success/${transID}`,
       fail_url: "http://localhost:3000/fail",
       cancel_url: "http://localhost:3000/cancel",
       ipn_url: "http://localhost:3000/ipn",
@@ -56,20 +58,16 @@ router.post(
       res.send({ success: true, redirect_url: GatewayPageURL });
       console.log("Redirecting to: ", GatewayPageURL);
     });
-
-    router.post('/order/success/:transID', async (req, res) => {
-        console.log(req.params.transID);
-      });
-
-      router.get(
-        "/stripeapikey",
-        catchAsyncErrors(async (req, res, next) => {
-          res.status(200).json({ stripeApikey: process.env.STRIPE_API_KEY });
-        })
-      );
   })
+);
 
-  
+router.post(
+  "/order/success",
+  catchAsyncErrors(async (req, res, next) => {
+    const transactionId = req.body.tran_id;
+
+     res.send({ success: true, message: "Transaction successful" });
+  })
 );
 
 module.exports = router;

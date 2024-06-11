@@ -128,6 +128,24 @@ const PayMent = () => {
       }
 
     // ssl er code shesh
+
+    // const config = {
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //   };
+  
+  
+    //   await axios
+    //     .post(`${server}/order/create-order`, order, config)
+    //     .then((res) => {
+    //       setOpen(false);
+    //       navigate("/order/success");
+    //       toast.success("Order successful!");
+    //       localStorage.setItem("cartItems", JSON.stringify([]));
+    //       localStorage.setItem("latestOrder", JSON.stringify([]));
+    //       window.location.reload();
+    //     });
   };
 
   const cashOnDeliveryHandler = async (e) => {
